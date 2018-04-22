@@ -1,0 +1,51 @@
+\documentclass[a4j]{jarticle}
+\usepackage{amsmath}
+\begin{document}
+\section{Bias-variance tradeoff}
+
+教師有り学習モデルの目標は、学習サンプル$(x^{(i)},y^{(i)})$を用いて真のモデル$y=f(x)+\epsilon$をなるべく良く近似するモデル
+$y=\hat{f(x)}$を学習することである。
+$\epsilon$は平均0、分散$\sigma$の確率変数であり、真のモデルが有する誤差を表す。\\
+そこで、「なるべく良く近似」しているかどうかの指標として、真のモデル$f(x)$と学習モデル$\hat{f(x)}$の
+平均自乗誤差(Mean Squared Error、以下MSE)を計算し、
+学習モデルの良さを計算してみる。
+MSEは、
+\begin{align}
+    \begin{aligned}
+    E[(y-\hat{y})^2]&=E[y^2-2y\hat{y}+\hat{y}^2]\\
+    &=E[y^2]-E[2y\hat{y}]+E[\hat{y}^2]
+    \end{aligned}
+\end{align}
+であり、また、
+\begin{equation}
+    Var(X)=E[X^2]-E[X]^2 \Leftrightarrow Var(X)+E[X]^2=E[X^2]
+\end{equation}
+であるので、
+\begin{align}
+    \begin{aligned}
+    E[y^2]-E[2y\hat{y}]+E[\hat{y}^2]&=Var(y)+E[y]^2+Var(\hat{y})+E[\hat{y}]^2-E[2y\hat{y}] \\
+    &=\sigma^2+Var(\hat{y})+f(x)^2+E[\hat{y}]^2-2f(x)E[\hat{y} ]\\
+    &=\sigma^2+Var(\hat{y})+(f(x)-E[\hat{y}])^2 \\
+    &=\sigma^2+Var(\hat{f(x)})+(f(x)-E[\hat{f(x)}])^2
+    \end{aligned}
+\end{align}
+ここで、$E[y\hat{y}]=E[y]E[\hat{y}]$、$E[y]=E[f(x)]+E[\epsilon]=f(x)$、$Var(y)=\sigma^2$を用いた。\\
+さて、
+\begin{equation}
+    \sigma^2+Var(\hat{f(x)})+(f(x)-E[\hat{f(x)}])^2
+\end{equation}
+は、MSEであるので、0に近いほうが望ましい。\\
+第1項は、真のモデルに内在する擾乱項なので、制御することができないが、
+第2項は、予測値の分散、第3項は、真のモデルと学習モデルの予測値の差の二乗誤差をそれぞれ表し、
+学習モデルの選択に応じて変化するので、第2項と第3項を同時に小さくすることが、学習の目的となる。\\
+しかしながら、第2項はモデルが与えられたデータを精度良く近似するほど、
+未知の値に対する誤差が増加するので大きくなり、
+第3項はモデルが与えられたデータを精度良く近似するほど小さくなる。\\
+一般に、モデルのパラメータが多いほど柔軟で、学習データにフィットするが、
+その一方で過学習をし、与えられたデータに極端にフィットしてしまいやすい。
+すなわち、学習データを良く近似するためにはモデルの柔軟性が必要だが、
+一方でそのようなモデルを用いると、モデルが過学習し、
+未知のデータに対して誤差が大きくなりやすくなるので
+モデルの選択には一定のトレードオフが存在する。
+これがBias-variance tradeoffである。
+\end{document}
