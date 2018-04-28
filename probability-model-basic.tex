@@ -1,0 +1,680 @@
+\documentclass[a4j]{jarticle}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+\section{Basics of probability models}
+
+
+\subsection{標本空間(Sample space) $\Omega$}
+標本空間$\Omega$とは
+\begin{itemize}
+    \item 起こりうるすべての結果を含む
+    \item 相互排他的(Mutually exclusive)
+    \item 漏れがない(Collectively exhaustive)
+\end{itemize}
+集合のことである。全事象ともいう。
+また、標本空間の要素（元）を標本点, 標本空間の部分集合を事象という。\\
+例えば一枚のコインを投げるときの標本空間は\{表、裏\}、標本点は\{表\}、\{裏\}である、
+事象は\{$\phi$\}、\{表\}、\{裏\}、\{表、裏\}となる。\\
+ここで\{$\phi$\}は空集合を表す。
+
+
+\subsection{確率の公理(Probability axioms)}
+標本空間の任意の事象$A_{i}\in\Omega$に対して確率$P(A_{i})$を割り当てたとき、$P(A_{i})$は次を満たす。
+\begin{itemize}
+    \item 第一公理(Nonnegativity): $P(A_{i}) \geq 0$
+    \item 第二公理(Normalization): $P(\Omega)=1$
+    \item 第三公理(Additivity): If $A_{i}\cap A_{j} = \phi$, 
+    then $P(A_{i}\cup A_{j})=P(A_{i}) + P(A_{j})$
+\end{itemize}
+また、上記の公理から下記が導ける。
+\begin{align}
+    \begin{aligned}
+    1 = P(\Omega) = P(A \cup \bar{A}) \quad \text{(第二公理を使った)}\\
+    P(A) = 1 - P(\bar{A}) \quad \text{(第三公理を使った)}\\
+    P(A) \leq 1 \quad \text{(第一公理を使った)}
+    \end{aligned}
+\end{align}
+$\bar{A}$は$A$の補集合である。\\
+さらに互いに素(disjoint)な事象$A_{i},A_{j},A_{k} \in \Omega$
+に対して、
+\begin{align}
+    \begin{aligned}
+    P(A_{i} \cup A_{j} \cup A_{k}) &= P((A_{i} \cup A_{j}) \cup A_{k}) \\
+    &= P(A_{i} \cup A_{j}) + P(A_{k}) \\
+    &= P(A_{i}) + P(A_{j}) + P(A_{k})
+    \end{aligned}
+\end{align}
+が成り立つ。上記の議論は任意個数の互いに素な事象について成り立つので、
+\begin{align}
+    \begin{aligned}
+    P(A_{1} \cup \cdots \cup A_{N}) &= \sum^{N}_{i=1} P(A_{i}) 
+    \quad \text{ただし、$A_{i} \cap A_{j} = \phi \quad (i \neq j)$}
+    \end{aligned}
+\end{align}
+
+
+\subsection{条件付き確率(Conditional probability)}
+事象Bが起きたときの、事象Aが起きる確率を、BにおけるAの条件付き確率$P(A \mid B)$と呼び、
+以下で定義される。
+\begin{align}
+    P(A \mid B) = \frac{P(A \cap B)}{P(B)}
+    \quad \text{ただし、$P(B) \neq 0$}\label{eq1}
+\end{align}
+\eqref{eq1}より、
+\begin{align}
+    P(A \cap B) = P(A \mid B)P(B)
+\end{align}
+と書き直せる。さらに、
+\begin{align}
+    \begin{aligned}
+    P(A \cap B \cap C) &= P(A \cap (B \cap C)) \\
+    &= P(A \mid B \cap C)P(B \cap C) \\
+    &= P(A \mid B \cap C)P(B \mid C)P(C)
+    \end{aligned}
+\end{align}
+$A,B,C$の順序は関係ないので、
+\begin{align}
+    \begin{aligned}
+    P(A \cap B \cap C) &= P(A \mid B \cap C)P(B \mid C)P(C) \\
+    &= P(B \mid A \cap C)P(A \mid C)P(C) \\
+    &= P(B \mid C \cap A)P(C \mid A)P(A) \\
+    &= P(C \mid B \cap A)P(B \mid A)P(A) \\
+    &= P(C \mid A \cap B)P(A \mid B)P(B) \\
+    &= P(A \mid C \cap B)P(C \mid B)P(B) 
+    \end{aligned}
+\end{align}
+であることに注意する。\\
+また、$A \cap B = \phi$として、下記が成り立つ。
+\begin{align}
+    \begin{aligned}
+    P(A \cup B \mid C) &= P(A \mid C) + P(B \mid C) \\
+    \end{aligned}
+\end{align}
+さらに、条件付き確率は次のような関係も成り立つ。
+\begin{align}
+    \begin{aligned}
+    P(A \cap B \mid C) &= \frac{P(A \cap B \cap C)}{P(C)} \\
+    P(A \mid B \cap C) &= \frac{P(A \cap B \cap C)}{P(B \cap C)} \\
+    P(A \cap B \mid C)P(C) &= P(A \mid B \cap C)P(B \cap C) \\
+    &= P(A \mid B \cap C)P(B \mid C)P(C) \\
+    \frac{P(A \cap B \mid C)}{P(B \mid C)} &= P(A \mid B \cap C) \label{eq:cond1}
+    \end{aligned}
+\end{align}
+
+
+\subsection{全確率の定理(Total probability theorem)}
+$\bigcup^{}_{i}A_{i} = \Omega$ ($A_{i} \cap A_{j} = \phi \quad (i \neq j)$)とする。このとき、下記が成り立つ。\\
+\begin{align}
+    \begin{aligned}
+    P(B) &= P(\Omega \cap B) \\ 
+    &= P(\bigcup^{}_{i}A_{i} \cap B) \\
+    &= \sum_{i}P(A_{i} \cap B) \\
+    &= \sum_{i}P(B \mid A_{i})P(A_{i})
+    \end{aligned}
+\end{align}
+これを全確率の定理という。
+
+
+\subsection{ベイズの定理(Bayes' theorem/rule)}
+条件付き確率の定義から下記が導ける。
+\begin{align}
+    P(A \cap B) = P(A \mid B)P(B) = P(B \mid A)P(A)
+\end{align}
+また、全確率の定理よりP(B)は下記で表せる。
+\begin{align}
+    \begin{aligned}
+    P(B) = \sum_{i}P(B \mid A_{i})P(A_{i})
+    \end{aligned}
+\end{align}
+したがって、条件付き確率$P(A_{i} \mid B)$は下記のように書き直せる。
+\begin{align}
+    P(A_{i} \mid B) &= \frac{P(B \mid A_{i})P(A_{i})}{P(B)} \\
+    &= \frac{P(B \mid A_{i})P(A_{i})}{\sum_{j}P(B \mid A_{j})P(A_{j})}
+\end{align}
+これをベイズの定理/法則という。これは事象Bが起きたときに事象Aが起きる確率は、
+事象Aが起きたときに事象Bが起きる確率がわかっていれば、Bが起きたという情報を使って、
+信念$P(A_{i})$を更新できることを表している。
+
+
+\subsection{事象の独立性(Independence of events)}
+2つの事象A、Bが独立とは次が満たされることをいう。
+\begin{align}
+    P(A \cap B) &= P(A)P(B) \label{eq:ind1}
+\end{align}
+このとき、AのBにおける条件付き確率$P(A \mid B)$は、
+\begin{align}
+    \begin{aligned}
+    P(A \mid B) &= \frac{P(A \cap B)}{P(B)} \\
+    &= \frac{P(A)P(B)}{P(B)} \\
+    &= P(A)
+    \label{eq:ind2}
+    \end{aligned}
+\end{align}
+となり、Bが起きたという事象は、事象Aが起きる確率を変化させないので、
+Bが起きたという事象はAに関して何も情報を与えない。\\ 
+注意として、$A \cap B = \phi$であることと事象の独立性は関係がない。\\
+例えば、1枚のコインを投げるとき、表が出る事象をA、裏が出る事象をBしたとき、
+明らかに$A \cap B = \phi$であるが、$P(A) = P(B) = \frac{1}{2}$であり、
+これは\eqref{eq:ind1}や\eqref{eq:ind2}を満たさない。
+実際、裏が出たという情報を知った場合、表が出ることはないので、
+裏が出たという事象はAの起きる確率に影響を与えている。\\
+さらに$N$個の事象$A_{1},A_{2} \cdots A_{N}$が独立とは次が成り立つことをいう。
+\begin{align}
+    P(A_{1} \cap A_{2} \cap \cdots \cap A_{N}) = P(A_{1})P(A_{2}) \cdots P(A_{N})
+\end{align}
+また、一般に事象間の独立性だけでは、全事象の独立性を意味しない。
+\begin{align}
+    &P(A_{1} \cap A_{2})=P(A_{1})P(A_{2}) \\ 
+    &P(A_{2} \cap A_{3})=P(A_{2})P(A_{3}) \\
+    &P(A_{1} \cap A_{3})=P(A_{1})P(A_{3}) \\ 
+    &\nRightarrow P(A_{1})P(A_{2})P(A_{3})
+\end{align}
+
+
+\subsection{条件付き独立(Conditional independence of events)}
+2つの事象A、Bが事象Cのもとで独立とは次が成り立つことをいう。
+\begin{align}
+    P(A \cap B \mid C) = P(A \mid C)P(B \mid C)
+\end{align}
+これは、事象Cが起きている場合において、事象Aと事象Bには関連性がなく、片方の事象の発生がもう片方の事象の確率を変化させない。 \\
+実際、\eqref{eq:cond1}より、条件付き独立のもとで下記が成り立つ。\\
+\begin{align}
+    P(A \mid B \cap C) &= \frac{P(A \cap B \mid C)}{P(B \mid C)}  \\
+    &= \frac{P(A \mid C)P(B \mid C)}{P(B \mid C)} \\
+    &= P(A \mid C)
+\end{align}
+注意として、条件付き独立性は絶対的な独立性を意味せず、絶対的な独立性は条件付き独立性を意味しない。\\
+\begin{align}
+    \begin{aligned}
+    P(A \cap B \mid C) = P(A \mid C)P(B \mid C) \nRightarrow P(A \cap B) = P(A)P(B) \\
+    P(A \cap B) = P(A)P(B) \nRightarrow P(A \cap B \mid C) = P(A \mid C)P(B \mid C)
+    \end{aligned}
+\end{align}
+
+
+\subsection{確率変数(Random variable)}
+どのような値となるかが，ある確率法則によって決まる変数で、数学的には確率変数$X:\Omega \rightarrow E$とは、
+標本空間$\Omega$からEへの関数のことをいう。通常は$E=\mathbb{R}$である。
+同じ標本空間から複数の確率変数がを定義してもよい。
+例えば、ランダムな生徒の集合から身長Hという確率変数と、体重Wという確率変数をそれぞれ定義することができる。\\
+取ることのできる値が離散的か、連続的かでそれぞれ、離散確率変数、連続確率変数という。
+
+\section{Discrete random variables}
+\subsection{確率質量関数(Probability mass function)}
+離散確率変数がとる値の確率を表す関数を確率質量関数とよぶ。
+確率質量関数は次のような性質を満たす。
+\begin{align}
+    \begin{aligned}
+    p_{X}(x)&=P(X=x) \\
+    &=P(\{\omega \in \Omega \ s.t. \ X(\omega)=x\}) \\
+    p_{X}(x) &\geq 0 \\
+    \sum_{x} p_{X}(x) &= 1 
+    \end{aligned}
+\end{align}
+確率変数Xの関数であることが自明な場合は、Xは省略され、$p_{X}(x)=p(x)$のように表記することもある。
+
+\subsection{期待値(Expectation)}
+確率変数Xの期待値$E[X]$は次で定義される。
+\begin{align}
+    &E[X]=\sum_{x}xp_{X}(x)
+\end{align}
+また、Xの従属変数$Y=g(X)$が与えられたとき、Yの期待値は次のように計算できる。
+\begin{align}
+    &E[Y]=E[g(X)]=\sum_{y}yp_{Y}(y)=\sum_{x}g(x)p_{X}(x)
+\end{align}
+2つの確率変数からなる関数$g(X,Y)$の期待値は次のように計算できる。
+\begin{align}
+    \begin{aligned}
+    &E[g(X,Y)]=\sum_{x}\sum_{y}g(x,y)p_{X,Y}(x,y)
+    \end{aligned}
+\end{align}
+条件付き確率の場合は、期待値は定義から次のように計算できる。
+\begin{align}
+    &E[X \mid A]=\sum_{x}xp_{X \mid A}(x)
+\end{align}
+条件付き確率の場合の期待値と全確率の定理から、確率変数Xの期待値$E[X]$は次のようにも表せる。
+\begin{align}
+    \begin{aligned}
+    &P(X)=\sum_{i}P(A_{i})p_{X \mid A_{i}}(x) \\
+    &E[X]=\sum_{x}xP(X=x)=\sum_{x}x\sum_{i}P(A_{i})p_{X \mid A_{i}}(x) \\
+    &E[X]=\sum_{i}P(A_{i})\sum_{x}xp_{X \mid A_{i}}(x) \\
+    &E[X]=\sum_{i}P(A_{i})E[X \mid A_{i}]
+    \end{aligned}
+\end{align}
+期待値は線形性を有する。すなわち、$a,b$を定数として次を満たす。
+\begin{align}
+    &E[aX+b]=aE[X]+b
+\end{align}
+二つの確率変数X,Yの積の期待値は、X,Yが独立である場合次のようになる。
+\begin{align}
+    \begin{aligned}
+    E[XY]&=\sum_{x}\sum_{y}xyP_{X,Y}(x,y) \\
+    &=\sum_{x}\sum_{y}xyP_{X}(x)P_{Y}(y) \quad (\because X,Yは独立事象) \\
+    &=\sum_{x}xP_{X}(x)\sum_{y}yP_{Y}(y) \\
+    &=E[X]E[Y]
+    \end{aligned}
+\end{align}
+確率変数の期待値との誤差の期待値は0である。
+\begin{align}
+    E[X-E[X]]=E[X]-E[X]=0
+\end{align}
+
+
+\subsection{分散(Variance)}
+確率変数Xの期待値E[X]からの二乗誤差の期待値を分散といい、次で定義される。
+\begin{align}
+    \begin{aligned}
+    var(X)=E[(X-E[X])^{2}]&=\sum_{x}(x-E[X])^{2}p_{X}(x) \\
+    &=\sum_{x}(x^{2}-2xE[X]+E[X]^{2})p_{X}(x) \\
+    &=\sum_{x}(x^{2}p_{X}(x))-2E[X]\sum_{x}xp_{X}(x)+E[X]^{2}\sum_{x}p_{X}(x) \\
+    &=E[X^2]-2E[X]^2+E[X]^2 \\
+    &=E[X^2]-E[X]^2
+    \end{aligned}
+\end{align}
+分散は次の性質を持つ。
+\begin{align}
+    \begin{aligned}
+    var(X) &\geq 0 \\
+    var(aX+b) &= a^2var(X)
+    \end{aligned}
+\end{align}
+
+\subsection{標準偏差(Standard deviation)}
+分散の平方根を標準偏差といい、下記で定義される。
+\begin{align}
+    std(X) = \sigma_{X} = \sqrt{var(X)} \\
+\end{align}
+
+\subsection{結合確率質量関数(Joint probability mass function)}
+結合確率の確率質量関数$p_{X,Y}(x,y)=P(X=x, Y=y)$は次のような性質がある。
+\begin{align}
+    \begin{aligned}
+    &\sum_{x}\sum_{y}p_{X,Y}(x,y)=1 \\
+    &p_{X}(x)=\sum_{y}p_{X,Y}(x,y) \\
+    &p_{X \mid Y}(x \mid y)=P(X=x \mid Y=y)=\frac{p_{X,Y}(x,y)}{p_{Y}(y)} \\
+    &\sum_{x}p_{X \mid Y}(x \mid y)=\sum_{x}\frac{p_{Y \mid X}(y \mid x)p_{X}(x)}{p_{Y}(y)}
+    =\sum_{x}\frac{p_{Y \mid X}(y \mid x)p_{X}(x)}{\sum_{x}p_{Y \mid X}(y \mid x)p_{X}(x)}=1
+    \end{aligned}
+\end{align}
+最後の等式は、どのような条件Yのもとでも、確率変数Xの確率の和は常に1であることを表している。
+
+\section{Continuous random variables}
+\subsection{確率密度関数(Probability density function)}
+連続確率変数がとる値の確率密度を表す関数を確率密度関数とよぶ。\\
+確率密度関数の値そのものは確率を表さず、確率の密度を表していることに注意する。
+すなわち、確率変数が取りうる値の範囲を指定してはじめて確率を計算することができる。
+例えば、確率変数Xが$x_{1},x_{2}\,(x_{1} < x_{2})$の範囲の値をとる確率は次で計算できる。
+\begin{align}
+    \begin{aligned}
+    p_{X}(x_{1} \leq x \leq x_{2})&=P(x_{1} \leq X \leq x_{2}) \\
+    &=\int_{x_{1}}^{x_{2}}P(x)dx
+    \end{aligned}
+\end{align}
+確率密度関数は次のような性質を満たす。
+\begin{align}
+    \begin{aligned}
+    &P(x) \geq 0 \\
+    &\int_{-\infty}^{\infty}P(x)dx = 1
+    \end{aligned}
+\end{align}
+
+\subsection{累積分布関数(Cumulative distribution function)}
+累積分布関数$C_{X}$とは確率密度関数P(X)が$X \leq x$となる確率を表す関数である。次式で定義される。
+\begin{align}
+    \begin{aligned}
+    C_{X}(x) &= P(X \leq x) =\int_{-\infty}^{x}p_{X}(t)dt
+    \end{aligned}
+\end{align}
+
+
+\subsection{期待値(Expectation)}
+確率変数Xの期待値$E[X]$は離散確率変数のときと同様に次で定義される。
+\begin{align}
+    \begin{aligned}
+    &E[X]=\int_{-\infty}^{\infty}xp_{X}(x)dx \\
+    &E[g(X)]=\int_{-\infty}^{\infty}g(x)p_{X}(x)dx
+    \end{aligned}
+\end{align}
+2つの確率変数からなる関数g(X,Y)の期待値は次のように計算できる。
+\begin{align}
+    &E[g(X,Y)]=\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}g(x,y)p_{X,Y}(x,y)dxdy \\
+\end{align}
+
+
+\subsection{分散(Variance)}
+確率変数Xの分散$var(X)$は離散確率変数のときと同様に次で定義される。
+\begin{align}
+    &var(X)=\sigma_{X}^2=\int_{-\infty}^{\infty}(x - E[X])^2p_{X}(x)dx
+\end{align}
+
+
+\subsection{結合確率密度関数(Joint probability density function)}
+二つの確率変数X,Yが同時に起きる確率は次で定義される。
+\begin{align}
+    &P(X,Y \in S)=\int\int_{S}p_{X,Y}(x,y)dxdy \\
+\end{align}
+また次が成り立つ。
+\begin{align}
+    &P_{X}(x)=\int_{-\infty}^{\infty}P_{X,Y}(x,y)dy \\
+\end{align}
+
+
+\subsection{連続確率変数の独立性(Independence of continuous random variables)}
+二つの確率変数X,Yが独立とは下記が成り立つことをいう。
+\begin{align}
+    &P_{X,Y}(x,y)=P_{X}(x)P_{Y}(y)
+\end{align}
+
+
+\subsection{連続確率変数の条件付き確率(Conditional probability of continuous random variables)}
+連続確率変数の条件付き確率は離散確率変数のときと同様に次で定義される。
+\begin{align}
+    &P_{X \mid Y}(x \mid y)=\frac{P_{X,Y}(x,y)}{P_{Y}(y)}
+\end{align}
+二つの確率変数X,Yが独立の場合、定義から次が導ける。
+\begin{align}
+    \begin{aligned}
+     P_{X \mid Y}(x \mid y)&=\frac{P_{X,Y}(x,y)}{P_{Y}(y)} \\
+    &=\frac{P_X(x)P_{Y}(y)}{P_{Y}(y)} \\
+    &=P_X(x)
+    \end{aligned}
+\end{align}
+離散確率変数のときと同様に、独立した確率変数は互いがもう一方に情報を与えないことがわかる。\\
+また、条件付き確率の定義と結合確率密度関数の性質から下記が導ける。
+\begin{align}
+    \begin{aligned}
+    P_{X}(x)&=\int_{-\infty}^{\infty}P_{X,Y}(x,y)dy \\
+    &= \int_{-\infty}^{\infty}P_{X \mid Y}(x \mid y)P_{Y}(y)dy \\
+    \end{aligned}
+\end{align}
+
+
+\subsection{ベイズの定理(Bayes' theorem/rule)}
+連続確率変数におけるベイズの定理は、条件付き確率の定義と全確率の定理から導ける。
+\begin{align}
+    \begin{aligned}
+    P_{X \mid Y}&=\frac{P_{Y \mid X}(y \mid x)P_{X}(x)}{P_{Y}(y)} \\
+    &=\frac{P_{Y \mid X}(y \mid x)P_{X}(x)}{\int_{-\infty}^{\infty}P_{Y \mid X}(y \mid x)P_{X}(x)dx}
+    \end{aligned}
+\end{align}
+
+
+\subsection{離散確率変数と連続確率変数を組み合わせたベイズの定理(Variations of Bayes' theorem/rule)}
+
+
+\section{応用編}
+\subsection{派生分布(Derived distribution)}
+分布が既知な1つもしくはそれ以上の確率変数の関数からなる確率変数の
+確率質量関数、確率密度関数のことをいう。
+例えば、二つの確率変数X,Yの同時確率$p_{X,Y}(x,y)$が既知のときに、
+その二つの確率変数の積XYに対する確率質量関数、確率密度関数がこれに該当する。 \\
+(実際上記の例で、$p_{X,Y}(x,y) \neq p_{XY}(x,y)$であるので、分布は一般に変化する)
+
+\subsubsection{離散確率変数の場合(Discrete random variable case)}
+$Y=g(X)$として、Xが離散確率変数の場合のYの確率質量関数$p_{Y}(y)$は次のように求められる。
+\begin{align}
+    \begin{aligned}
+    p_{Y}(y)&=P(g(X) = y) \\
+    &=\sum_{x:g(X)=y}p_{X}(x)
+    \end{aligned}
+\end{align}
+
+
+\subsubsection{連続確率変数の場合(Continuous random variable case)}
+$Y=g(X)$として、Xが連続確率変数の場合のYの確率密度関数$p_{Y}(y)$は次のように
+Yの累積分布関数$C_{Y}(y)$を計算し、それを微分することで得られる。
+\begin{align}
+    \begin{aligned}
+    &C_{Y}(y)=P(Y \leq y) \\
+    &p_{Y}(y)=\frac{dC_{Y}(y)}{dy}
+    \end{aligned}
+\end{align}
+例えば、$[0:2]$の範囲で一様に分布する変数Xがあったときの、$Y=X^3$で定義される、
+Yの確率密度関数は次のように求められる。
+\begin{align}
+    \begin{aligned}
+    &P_{X}(x)=\frac{1}{2} \\
+    &C_{X}(x)=P_{X}(X \leq x)=\frac{1}{2}x \\
+    \end{aligned}
+\end{align}
+\begin{align}
+    \begin{aligned}
+    C_{Y}(y)&=P(Y \leq y)=P(X^3 \leq Y) \\
+    &=P(X \leq Y^{\frac{1}{3}}) \\
+    &=\frac{1}{2}y^{\frac{1}{3}}
+    \end{aligned}
+\end{align}
+\begin{align}
+    \begin{aligned}
+    P_{Y}(y)=\frac{dC_{Y}(y)}{dy}=\frac{1}{6}y^{-\frac{2}{3}}
+    \end{aligned}
+\end{align}
+
+\subsubsection{$Y=aX+b$の確率密度関数}
+$Y=aX+b$で表される確率変数Yの確率密度関数は$\frac{1}{|a|}P_{X}(\frac{y-b}{a})$で表される。\\
+証明($a > 0$の場合)
+\begin{align}
+    \begin{aligned}
+    C_{Y}(y)&=P(Y \leq y) \\
+    &=P(aX+b \leq y) \\
+    &=P(X \leq \frac{y-b}{a}) \\
+    \end{aligned}
+\end{align}
+ここで、$P_{Y}(y)=\frac{dC_{Y}(y)}{dy}$なので、
+\begin{align}
+    \begin{aligned}
+    P_{Y}(y)&=\frac{dC_{Y}(y)}{dy}=\frac{dC_{X}(\frac{y-b}{a})}{dy} \\
+    &=\frac{dC_{X}(x)}{dx}\frac{dx}{dy} \quad \text{($x=\frac{y-b}{a}$とおいた)} \\
+    &=\frac{1}{a}P_{X}(\frac{y-b}{a}) \\
+    \end{aligned}
+\end{align}
+$a < 0$の場合も同様に計算でき、
+\begin{align}
+    \begin{aligned}
+    C_{Y}(y)&=P(Y \leq y) \\
+    &=P(X \geq \frac{y-b}{a}) \\
+    &=1-P(X \leq \frac{y-b}{a}) \\
+    \end{aligned}
+\end{align}
+\begin{align}
+    \begin{aligned}
+    P_{Y}(y)&=\frac{dC_{Y}(y)}{dy}=\frac{d(1-C_{X}(\frac{y-b}{a}))}{dy} \\
+    &=-\frac{1}{a}P_{X}(\frac{y-b}{a}) \\
+    \end{aligned}
+\end{align}
+したがって、一般に次のように表せる。
+\begin{align}
+    P_{Y}(y)=\frac{1}{|a|}P_{X}(\frac{y-b}{a}) \\
+\end{align}
+
+\subsection{標本平均(Sample mean)}
+任意の確率分布に従って得られたN個のサンプル$X_{1} \cdots X_{N}$の算術平均を標本平均といい、
+次式で表される。
+\begin{align} 
+    M_{N} = \frac{X_{1} + \cdots + X_{N}}{N} 
+\end{align}
+
+\subsection{マルコフの不等式(Markov's inequality)}
+非負の確率変数Xとその期待値$E[X]$は次のような不等式を満たす。
+\begin{align}
+    E[X]&=\sum_{x}xp_{X}(x) \\
+    &\geq \sum_{x \geq a}ap_{X}(x) \\
+    &= aP(X \geq a)
+\end{align}
+これは、期待値が小さいときに確率変数Xがaより大きくなる確率は小さく、
+また反対に、期待値が大きいときは確率変数Xがaより大きな値になりやすいことを意味している。
+
+\subsection{チェビシェフの不等式(Chebyshev's inequality)}
+有限な平均$\mu$と標準偏差$\sigma$の確率分布に従って生成される確率変数Xを考えたとき、\\
+$\mu$と$\sigma$の間には以下の不等式が成り立ち、この不等式をチェビシェフの不等式とよぶ。
+\begin{align}
+    \begin{aligned}
+    \sigma^2 &= \int_{-\infty}^{\infty}p_{X}(x)(x-\mu)^2dx \\
+    &\geq \int_{-\infty}^{-c+\mu}p_{X}(x)(x-\mu)^2dx+\int_{c+\mu}^{\infty}p_{X}(x)(x-\mu)^2dx \\
+    &\geq c^2P(X \leq -c+\mu) + c^2P(X \geq c+\mu) \\
+    &= c^2P(X - \mu \leq -c) + c^2P(X - \mu \geq c) \\
+    &= c^2P(|X - \mu| \geq c) \\
+    &\rightarrow \frac{\sigma^2}{c^2} \geq P(|X - \mu| \geq c)
+    \end{aligned}
+\end{align}
+すなわち、標準偏差が小さい時は確率変数Xが平均$\mu$から遠い値(c以上)になる確率は小さく、
+反対に標準偏差が大きいときは、確率変数は平均から離れた値をとりやすいということを示している。
+これは、直感的な理解と一致する。
+
+\subsection{確率収束(Convergence in probability)}
+ある確率変数の列$Y_{n}$が値$a$に確率収束するとは以下を満たすことをいう。
+\begin{align}
+    \begin{aligned}
+    &\forall \epsilon > 0 \\
+    &\lim_{n \to \infty}P(|Y_{n}-a| \geq \epsilon)=0
+    \end{aligned}  
+\end{align}
+
+\subsection{独立同分布(i.i.d (Independenly and Identically Distributed)}
+ある確率変数の列$X_{1} \cdots X_{N}$が独立同分布とは、
+$i \neq j$であるような確率変数$X_{i},X_{j}$がそれぞれ独立であり、
+それぞれの確率変数は同一の分布から生成されることを指す。
+
+\subsection{モーメント/積率母関数(Moment generating function)}
+確率変数Xのモーメント母関数は下記で定義される。
+\begin{align}
+    M_{X}(t) := E[e^{tX}]
+\end{align}
+ここで$e^{tX}$のマクローリン展開を考えると
+\begin{align}
+    e^{tX}=1+tX+\frac{(tX)^2}{2!}+\frac{(tX)^3}{3!}+\cdots
+\end{align}
+であるので、確率変数Xの期待値が存在すると仮定すると
+\begin{align}
+    \begin{aligned}
+    &E[e^{tX}]=E[1]+E[X]t+\frac{E[X^2]}{2!}t^2+\frac{E[X^3]}{3!}t^3+\cdots \\
+    &\rightarrow M_{X}^{(n)}(0)=E[X^n]
+    \end{aligned}  
+\end{align}
+モーメント母関数に対して、一般に以下が成り立つ。
+\begin{align}
+    \begin{aligned}
+    M_{aX}(t) = M_{X}(at)
+    \end{aligned}  
+\end{align}
+二つの独立な確率変数$X_{1},X_{2}$の場合、モーメント母関数は
+\begin{align}
+    \begin{aligned}
+    M_{X_{1}+M_{2}}(t) = M_{X_{1}}(t)M_{X_{2}}(t)
+    \end{aligned}  
+\end{align}
+
+
+\subsection{標本平均と期待値の関係(Relationship between sample mean and expectation)}
+我々は普段、標本平均をサンプルの特徴を表す一つの指標として用いることが多い。\\
+そこでは、標本平均$M_{N}$とそのサンプル$X_{i}$の期待値$E[X_{i}]$がしばしば同じものとして扱われる。 \\
+果たして、両者には関係があるのだろうか。\\
+ここでは、その両者の関係性を表す大数の法則と中心極限定理について述べる。
+
+\subsection{大数の法則(Law of large numbers)}
+\subsubsection{大数の弱法則(Weak law of large numbers)}
+i.i.dであるような確率変数の列$X_{1}, X_{2} \cdots$の
+確率変数が有限な平均$\mu$と標準偏差$\sigma$を持つと仮定したとき、
+\begin{align}
+    \begin{aligned}
+    E[M_{N}]&=E[\frac{X_{1} + \cdots + X_{N}}{N}] \\
+    &=\frac{E[X_{1}] + \cdots + E[X_{N}]}{N} \\
+    &=\frac{\mu + \cdots + \mu}{N} \\
+    &=\frac{N\mu}{N}=\mu
+    \end{aligned}  
+\end{align}
+\begin{align}
+    \begin{aligned}
+    var[M_{N}]&=var[\frac{X_{1} + \cdots + X_{N}}{N}] \\
+    &=E[(\frac{X_{1} + \cdots + X_{N}}{N} - E[M_{N}])^2] \\
+    &=E[(\frac{(X_{1} - \mu) + \cdots + (X_{N} - \mu)}{N})^2] \\
+    &=(\frac{\sigma^2 + \cdots + \sigma^2}{N^2}) \\
+    &=\frac{N\sigma^2}{N^2}=\frac{\sigma^2}{N}
+    \end{aligned}  
+\end{align}
+である。チェビシェフの不等式によると$\frac{\sigma^2}{c^2} \geq P(|X - \mu| \geq c)$であるから、
+\begin{align}
+    \begin{aligned}
+    &\frac{\sigma^2}{Nc^2}=P(|M_{N}-\mu| \geq c) \\
+    &\lim_{N \to \infty}\frac{\sigma^2}{Nc^2}=\lim_{N \to \infty}P(|M_{N}-\mu| \geq c)=0
+    \end{aligned}  
+\end{align}
+すなわち、サンプル数Nが大きければ大きいほど、標本平均は真の平均に確率収束する。
+
+\subsubsection{大数の強法則(Strong law of large numbers)}
+大数の強法則は弱法則と同一の条件下で概収束することを示す法則である。
+証明は省略する。
+
+\subsection{中心極限定理(Central limit theorem)}
+標本の和$S_{N}=X_{1} + \cdots + X_{N}$に対して、これまでの議論から下記が成り立つ。
+\begin{align}
+    \begin{aligned}
+    &var[S_{N}]=N\sigma^2 \\
+    &var[\frac{S_{N}}{N}]=\frac{\sigma^2}{N} \\
+    &var[\frac{S_{N}}{\sqrt{N}}]=\sigma^2
+    \end{aligned}  
+\end{align}
+これより、$S_{N}$を用いて、平均0、分散1であるような変数$Z_{N}$を考えることができる。
+\begin{align}
+    \begin{aligned}
+    &Z_{N}=\frac{S_{N}-E[S_{N}]}{\sqrt{N}\sigma} \\
+    &E[Z_{N}]=E[\frac{S_{N}-E[S_{N}]}{\sqrt{N}\sigma}]=\frac{E[S_{N}]-E[S_{N}]}{\sqrt{N}\sigma}=0\\
+    &var(Z_{N})=var(\frac{S_{N}-E[S_{N}]}{\sqrt{N}\sigma})=\frac{var(S_{N}-N\mu)}{N\sigma^2}=1
+    \end{aligned} 
+\end{align}
+このとき、$Z_{N}$は$N \to \infty$で下記の確率分布に従う。
+\begin{align}
+    p_{Z_{N}}(z)=\frac{1}{\sqrt{2\pi}}\exp[-\frac{z^2}{2}]
+\end{align}
+証明 \\
+$Z_{N}$のモーメント母関数${M_{Z_{N}}}(t)$が$\lim_{N \to \infty}$で、
+標準正規分布のモーメント母関数$\exp[\frac{t^2}{2}]$と一致することを示す。
+\begin{align}
+    \begin{aligned}
+    Z_{N}&=\frac{\sum_{i}^{N}X_{i}-N\mu}{\sqrt{N}\sigma} \\
+    &=\frac{\sum_{i}^{N}X_{i}-\sum_{i}^{N}\mu}{\sqrt{N}\sigma} \\
+    &=\frac{1}{\sqrt{N}}\sum_{i}^{N}\frac{X_{i}-\mu}{\sigma} \\
+    &=\frac{1}{\sqrt{N}}\sum_{i}^{N}Y_{i} \quad \text{($Y_{i}=\frac{X_{i}-\mu}{\sigma}$)}
+    \end{aligned} 
+\end{align}
+$Y_{i}$は平均0、分散1の確率分布に従う確率変数なので、モーメント母関数は
+\begin{align}
+    \begin{aligned}
+    &E[e^{tY_{i}}]=1+E[Y_{i}]t+\frac{E[Y_{i}^2]}{2!}t^2+\frac{E[Y_{i}^3]}{3!}t^3+\cdots \\ 
+    &E[e^{tY_{i}}]=1+\frac{t^2}{2}+\frac{\mu_{3}}{3!}t^3+\cdots \\ 
+    \end{aligned} 
+\end{align}
+一方、$Z_N$のモーメント母関数は、モーメント母関数の性質と$Y_{i}$がi.i.dという仮定から、
+\begin{align}
+    \begin{aligned}
+    &M_{Z_{N}}(t)=[M_{\frac{Y_{1}}{\sqrt{N}}}(t)]^N \\
+    &=[M_{Y_{1}}(\frac{t}{\sqrt{N}})]^N \\
+    &=[1+\frac{1}{2}(\frac{t}{\sqrt{N}})^2+\frac{\mu_{3}}{3!}(\frac{t}{\sqrt{N}})^3+\cdots]^N \\ 
+    &=[1+u]^N \quad \text{($u=\frac{1}{2}(\frac{t}{\sqrt{N}})^2+\frac{\mu_{3}}{3!}(\frac{t}{\sqrt{N}})^3+\cdots$とおいた)}
+    \end{aligned} 
+\end{align}
+ここで、$\lim_{N \to \infty}M_{Z_{N}}(t)=\exp[\frac{t^2}{2}]$を両辺の対数をとって、比較する。
+\begin{align}
+    \begin{aligned}
+    \lim_{N \to \infty}(\log{M_{Z_{N}}(t)}-\frac{t^2}{2})
+    &=\lim_{N \to \infty}(N\log(1+u)-\frac{t^2}{2}) \\
+    &=\lim_{N \to \infty}(N(u-\frac{u^2}{2}+\cdots)-\frac{t^2}{2})
+    \end{aligned} 
+\end{align}
+式変形の途中で$\lim{N \to \infty}$のとき$u \to 0$であるので、下記の対数関数のテイラー展開を用いた。
+\begin{align}
+    \log(1+x)=x-\frac{x^2}{2}+\frac{x^3}{3}-\frac{x^4}{4}+\cdots
+\end{align}
+$N \to \infty$の極限において下記が成り立つので、
+\begin{align}
+    \begin{aligned}
+    &\lim_{N \to \infty}Nu=\frac{t^2}{2} \\
+    &\lim_{N \to \infty}Nu^{q}=0 \quad (2 \leq q) \\
+    &\lim_{N \to \infty}(\log{M_{Z_{N}}(t)}-\frac{t^2}{2})=0
+    \end{aligned} 
+\end{align}
+以上より、モーメント母関数$M_{Z_{N}}(t)$は標準正規分布のモーメント母関数に収束し、
+これより、モーメント母関数は確率分布と一対一に対応するので、
+$Z_{N}$は標準正規分布に収束することが示せた。
+\end{document}
